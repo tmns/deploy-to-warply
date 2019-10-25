@@ -57,7 +57,7 @@ class Client:
 
     def __progress(self, filename, size, sent):
         """Display SCP progress."""
-        sys.stdout.write("%s\'s progress: %.2f%%    \r" % (filename, float(sent)/float(size)*100))
+        sys.stdout.write(f'uploading {filename}: {float(sent) / float(size) * 100:.2f}%    \r')
 
 
 if __name__ == '__main__':
