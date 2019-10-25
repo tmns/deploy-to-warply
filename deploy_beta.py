@@ -36,19 +36,20 @@ class Client:
         """Executes a single unix command."""
         if self.client is None:
             self.client = self.__connect()
-        print(f'executing command on remote server {cmd}...')
+        print(f'executing command on remote server: {cmd}...')
         stdin, stdout, stderr = self.client.exec_command(cmd)
         return stdout.readlines()
 
-    def upload(self, local_dir, remote_directory):
+    def upload(self, local_dir, remote_upload_dir):
         """Upload a single file to a remote directory."""
         if self.client is None:
             self.client = self.__connect()
+        print(f'uploading {local_dir} to {Config.remote_server}:{remote_upload_dir}...')
         scp = SCPClient(self.client.get_transport(), progress=self.__progress)
         try:
             scp.put(local_dir,
                     recursive=True,
-                    remote_path=remote_directory)
+                    remote_path=remote_upload_dir)
         except SCPException:
             raise SCPException.message
         finally:
@@ -60,11 +61,14 @@ class Client:
 
 
 if __name__ == '__main__':
+    local_dir = Config.local_dir
+    remote_upload_dir = Config.remote_upload_dir
+    remote_final_dir = Config.remote_final_dir
     client = Client(Config)
-    client.upload(Config.local_dir, Config.remote_upload_dir)
-    client.execute("rm -rf /tmp/test/dist.bak")
-    client.execute("mv /tmp/test/dist /tmp/test/dist.bak")
-    client.execute("mv /tmp/dist /tmp/test")
+    client.upload(local_dir, remote_upload_dir)
+    client.execute(f'rm -rf {remote_final_dir}/{local_dir}.bak')
+    client.execute(f'mv {remote_final_dir}/{local_dir} {remote_final_dir}/{local_dir}.bak')
+    client.execute(f'mv {remote_upload_dir}/{local_dir} {remote_final_dir}')
     client.disconnect()
     print('finished!')
 
