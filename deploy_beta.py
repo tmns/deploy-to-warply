@@ -1,4 +1,4 @@
-import os
+import os, sys
 from paramiko import SSHClient, AutoAddPolicy, RSAKey
 from paramiko.auth_handler import AuthenticationException
 from scp import SCPClient, SCPException 
@@ -12,7 +12,6 @@ class Client:
         self.remote_port = config.remote_port
         self.remote_user = config.remote_user
         self.remote_password = config.remote_password
-        self.remote_dir = config.remote_dir
         self.client = None
 
     def __connect(self):
@@ -41,13 +40,13 @@ class Client:
         stdin, stdout, stderr = self.client.exec_command(cmd)
         return stdout.readlines()
 
-    def upload(self, file, remote_directory):
+    def upload(self, local_dir, remote_directory):
         """Upload a single file to a remote directory."""
         if self.client is None:
             self.client = self.__connect()
-        scp = SCPClient(self.client.get_transport())
+        scp = SCPClient(self.client.get_transport(), progress=self.__progress)
         try:
-            scp.put(file,
+            scp.put(local_dir,
                     recursive=True,
                     remote_path=remote_directory)
         except SCPException:
@@ -55,17 +54,14 @@ class Client:
         finally:
             scp.close()
 
+    def __progress(self, filename, size, sent):
+        """Display SCP progress."""
+        sys.stdout.write("%s\'s progress: %.2f%%    \r" % (filename, float(sent)/float(size)*100))
+
 
 if __name__ == '__main__':
     client = Client(Config)
-    client.execute(f'mkdir {Config.remote_dir}')
-    local_dir = os.walk(os.path.abspath(Config.local_dir))
-    for root, dirs, files in local_dir:
-        for file in files:
-            local_file = root + '/' + file
-            client.upload(local_file, Config.remote_dir)
-            filename = file.split('/')[-1]
-            print(f'Uploaded {filename} to {Config.remote_server}:{Config.remote_dir}.')
+    client.upload(Config.local_dir, Config.remote_upload_dir)
     client.execute("rm -rf /tmp/test/dist.bak")
     client.execute("mv /tmp/test/dist /tmp/test/dist.bak")
     client.execute("mv /tmp/dist /tmp/test")
