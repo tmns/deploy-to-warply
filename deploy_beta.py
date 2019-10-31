@@ -1,4 +1,6 @@
 import sys
+import subprocess
+import argparse
 from os import environ
 from dotenv import load_dotenv
 from paramiko import SSHClient, AutoAddPolicy, RSAKey
@@ -16,7 +18,7 @@ class Config:
     remote_password = environ.get('REMOTE_PASSWORD')
     remote_upload_dir = environ.get('REMOTE_UPLOAD_DIR') or '/tmp'
     remote_final_dir = environ.get('REMOTE_FINAL_DIR')
-    local_dir = environ.get('LOCAL_DIR')
+    local_dir = environ.get('LOCAL_DIR')  or '/dist'
 
 
 class Client:
@@ -74,14 +76,27 @@ class Client:
 
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description="deploy an ember project to beta")
+    parser.add_argument("-b", "--build", help="calls 'ember b' to build the current ember project", action="store_true")
+    args = parser.parse_args()
+    if args.build:
+        print('building project...')
+        try:
+            subprocess.run(["ember","b"], check=True)
+        except Exception as ex:
+            sys.exit()
+
     local_dir = Config.local_dir
     remote_upload_dir = Config.remote_upload_dir
     remote_final_dir = Config.remote_final_dir
+
     client = Client(Config)
+    
     client.upload(local_dir, remote_upload_dir)
     client.execute(f'rm -rf {remote_final_dir}/{local_dir}.bak')
     client.execute(f'mv {remote_final_dir}/{local_dir} {remote_final_dir}/{local_dir}.bak')
     client.execute(f'mv {remote_upload_dir}/{local_dir} {remote_final_dir}')
+    
     client.disconnect()
     print('finished!')
 
