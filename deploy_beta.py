@@ -8,8 +8,11 @@ from paramiko.auth_handler import AuthenticationException
 from scp import SCPClient, SCPException 
 from io import StringIO
 
-
-load_dotenv(verbose=True)
+try:
+    load_dotenv(verbose=True)
+except Exception as ex:
+    print(f'encountered the following error when attempting to load .env:\n{ex}')
+    sys.exit()
 
 class Config:
     remote_server = environ.get('REMOTE_SERVER')
