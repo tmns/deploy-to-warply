@@ -9,7 +9,7 @@ from scp import SCPClient, SCPException
 from io import StringIO
 
 try:
-    load_dotenv(verbose=True)
+    load_dotenv(dotenv_path=".env", verbose=True)
 except Exception as ex:
     print(
         f'encountered the following error when attempting to load .env:\n{ex}')
@@ -23,7 +23,7 @@ class Config:
     remote_password = environ.get('REMOTE_PASSWORD')
     remote_upload_dir = environ.get('REMOTE_UPLOAD_DIR') or '/tmp'
     remote_final_dir = environ.get('REMOTE_FINAL_DIR')
-    local_dir = environ.get('LOCAL_DIR') or '/dist'
+    local_dir = environ.get('LOCAL_DIR') or 'dist'
 
 
 class Client:
