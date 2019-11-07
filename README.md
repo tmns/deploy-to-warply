@@ -1,6 +1,6 @@
 # Deploy to Beta Server Script 🚀
 
-This is a script to be used for both building and deploying an Ember project to the Warply beta / test server (beta.warp.ly). Included in the repo is the source code for the script, along with an executable `deploy_beta`, which you can add to your `/usr/local/bin` directory for ease of use.
+This is a script to be used for both building and deploying an Ember project to a beta / test server. Included in the repo is the source code for the script, along with an executable `deploy_beta`, which you can add to your `/usr/local/bin` directory for ease of use.
 
 # Install
 There are two main ways you can *install* the script. 
@@ -39,15 +39,14 @@ optional arguments:
 As you can see in the output, the script allows you to specify a environment configuration file for the script to pull defined parameters from. If you do not specify your own with the `-e` argument, the script will look in the current directory for a file called `.env`. If this file does not exist, the script will fail and exit immediately. As such, before you attempt to use the script for deployment, make sure you create such a file. 
 
 The environment variables you can set within the configuration file include:
-```
-REMOTE_SERVER - Mandatory: The IP address / hostname of the server you want to deploy to.
-REMOTE_PORT - Optional: The port of the server you wan to deploy to. Defaults to 22.
-REMOTE_USER - Mandatory: The username of the account on the remote server you want to deploy with.
-REMOTE_PASSWORD - Mandatory: The password of the account on the remote server you want to deploy with.
-REMOTE_UPLOAD_DIR - Optional: The directory on the remote server that the local folder will be uploaded to. Defaults to /tmp.
-REMOTE_FINAL_DIR - Mandatory: The directory on the remote server that the local folder will be served from.
-LOCAL_DIR - Optional: The local directory you wish to upload to the remote server. Defaults to ./dist.
-```
+* `REMOTE_SERVER` - **Mandatory** - The IP address / hostname of the server you want to deploy to.
+* `REMOTE_PORT` - Optional - The port of the server you wan to deploy to. **Defaults** to 22.
+* `REMOTE_USER` - **Mandatory** - The username of the account on the remote server you want to deploy with.
+* `REMOTE_PASSWORD` - **Mandatory** - The password of the account on the remote server you want to deploy with.
+* `REMOTE_UPLOAD_DIR` - Optional - The directory on the remote server that the local folder will be uploaded to. For safety reasons, cannot be the same as REMOTE_FINAL_DIR. **Defaults** to /tmp.
+* `REMOTE_FINAL_DIR` - **Mandatory** - The directory on the remote server that the local folder will be served from.
+* `LOCAL_DIR` - Optional - The local directory you wish to upload to the remote server. **Defaults** to ./dist.
+
 Once you have a file with the appropriate variables set, you are ready to deploy! This is as easy as running something like the following:
 ```
 $ deploy_beta -b
