@@ -101,6 +101,9 @@ if __name__ == '__main__':
     local_dir = config.local_dir
     remote_upload_dir = config.remote_upload_dir
     remote_final_dir = config.remote_final_dir
+    if remote_upload_dir == remote_final_dir:
+        print('REMOTE_UPLOAD_DIR and REMOTE_FINAL_DIR cannot be the same!\nexiting...')
+        sys.exit()
 
     client = Client(config)
 
