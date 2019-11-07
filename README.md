@@ -10,7 +10,8 @@ There are two main ways you can *install* the script.
 $ chmod +x ~/Downloads/deploy_beta
 $ mv ~/Downloads/deploy_beta /usr/local/bin
 ```
-* That's it! No installation of dependencies. No other BS. Just download the binary, make it executable, and execute it. The drawback to this however is that it can be slow to start (we're talking a few seconds on average here 😬). If this is as annoying for you as it is for me, you may consider going with option #2 below. 
+* That's it! No installation of dependencies. No other BS. Just download the binary, make it executable, and execute it. 
+* The drawback to this however is that it can be slow to start (we're talking a few seconds on average here 😬). If this is as annoying for you as it is for me, you may consider going with option #2 below. 
 
 2. The second way to *install* the script is to download its source code and `requirements.txt` file, install its dependencies on a user level, and create an `alias` for easy access. This would look something like this:
 ```
