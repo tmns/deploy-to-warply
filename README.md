@@ -65,7 +65,7 @@ Running with `-b` as shown above will also build the Ember project in the curren
 
 # Precautions
 The script makes sure to take some precautions during the deploy process. This is so that we don't just blindly upload files to the server, overwriting everything in our way. This is achieved by breaking the deploy process up into three steps:
-1. We upload the local directory to a defined upload directory on the server (defaults to `/tmp`). Note the upload directory and the final directory **cannot** be the same. If they are, the script prints an appropriate message to the user and exits immediately.
+1. We upload the local directory to a defined upload directory on the server (defaults to `/tmp`). Note the upload directory and the final directory **cannot** be the same. If they are, the script prints an appropriate message to the user and exits immediately. Also, if the upload fails, we exit immediately and no further commands are executed on the server.
 2. We delete the app's current backup directory (typically named something like `dist.bak`) from the final directory the app will be served from (`~/app` in the above example) and append `.bak` to the directory of the app itself (e.g. `~/app/dist` -> `~/app/dist.bak`), essentially creating a backup of the current app. 
 3. We move the uploaded directory from its upload directory to the final directory (e.g. `/tmp/dist` -> `~/app/dist`), completing the deployment process.
 
