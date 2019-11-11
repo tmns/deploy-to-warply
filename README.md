@@ -12,7 +12,8 @@ $ cd <this repo>
 $ pip3 install --user -r requirements.txt
 $ echo "alias deploy_beta='python3 /path/to/deploy_beta.py'" >> ~/.bashrc
 ```
-* And that's it! Fast, simple, and it should **just work** (famous last words 💀). However, if you'd prefer to run a compiled binary instead of an aliased script, you can try #2 below.
+  * And that's it! Fast, simple, and it should **just work** (famous last words 💀). 
+  * However, if you'd prefer to run a compiled binary instead of an aliased script, you can try #2 below.
 
 2. The second approach also begins with cloning the repository; however, the similarities pretty much stop there. Once you have cloned the repo, you then need to create a virtual environment, install all dependencies, and finally use `pyinstaller` to generate an executable binary. On Mac or Linux, this would look something like:
 ```
@@ -23,12 +24,12 @@ $ pip3 install -r requirements.txt
 $ pip3 install --user pyinstaller
 $ <path-to-python3>/bin/pyinstaller --onefile --paths venv/lib/python3.7/site-packages:$PATH deploy_beta.py
 ```
-* This will create the folder `./dist` and drop an executable called `deploy_beta` in it. From there, you could then move the executable to your `bin` folder for ease of use:
+  * This will create the folder `./dist` and drop an executable called `deploy_beta` in it. From there, you could then move the executable to your `bin` folder for ease of use:
 ```
 $ mv ./dist/deploy_beta /usr/local/bin
 ```
-* Once that's done, you can execute the script by simply running `deploy_beta`, regardless of which folder you are in. Also, aside from `pyinstaller`, you are not required to install any other user level dependencies. 
-* The drawback to this approach however is that the executable itself can be slow to start (we're talking a few seconds on average here 😬). If this is as annoying for you as it is for me, you may want to stick with #1. 
+  * Once that's done, you can execute the script by simply running `deploy_beta`, regardless of which folder you are in. Also, aside from `pyinstaller`, you are not required to install any other user level dependencies. 
+  * The drawback to this approach however is that the executable itself can be slow to start (we're talking a few seconds on average here 😬). If this is as annoying for you as it is for me, you may want to stick with #1. 
 
 Of course, there are also other ways to install and use the script so if you have a better / preferred method go for it. But I think the above two are the most streamlined.
 
