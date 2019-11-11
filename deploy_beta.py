@@ -49,11 +49,10 @@ class Client:
         return self.client
 
     def disconnect(self):
-        """Close ssh connection."""
         self.client.close()
 
     def execute(self, cmd):
-        """Executes a single unix command."""
+        """Executes a single command on the remote server."""
         if self.client is None:
             self.client = self.__connect()
         print(f'executing command on remote server: {cmd}...')
@@ -61,7 +60,7 @@ class Client:
         return stdout.readlines()
 
     def upload(self, local_dir, remote_upload_dir):
-        """Upload a single file to a remote directory."""
+        """Uploads a local directory to the remote server."""
         if self.client is None:
             self.client = self.__connect()
         scp = SCPClient(self.client.get_transport(), progress=self.__progress)
@@ -70,12 +69,12 @@ class Client:
                     recursive=True,
                     remote_path=remote_upload_dir)
         except SCPException:
-            raise SCPException.message
+            raise SystemExit(SCPException.message)
         finally:
             scp.close()
 
     def __progress(self, filename, size, sent):
-        """Display SCP progress."""
+        """Displays SCP progress."""
         sys.stdout.write(
             f'uploading {filename}: {float(sent) / float(size) * 100:.2f}%    \r')
 
