@@ -5,22 +5,30 @@ This is a script to be used for both building and deploying an Ember project to 
 # Install
 There are two main ways you can *install* the script. 
 
-1. The first and most straight forward way is to download the latest pre-built binary from the releases page [here](). Once you have downloaded the binary, you can make it executable and move it to your `bin` folder (to make it globally callable) like so:
-```
-$ chmod +x ~/Downloads/deploy_beta
-$ mv ~/Downloads/deploy_beta /usr/local/bin
-```
-* That's it! No installation of dependencies. No other BS. Just download the binary, make it executable, and execute it. 
-* The drawback to this however is that it can be slow to start (we're talking a few seconds on average here 😬). If this is as annoying for you as it is for me, you may consider going with option #2 below. 
-
-2. The second way to *install* the script is to download its source code and `requirements.txt` file, install its dependencies on a user level, and create an `alias` for easy access. This would look something like this:
+1. The first and most straight forward way is to first clone this repository, then install the necessary dependencies on a user level, and finally `alias` the script for ease of use. On Mac or Linux, this would look something like:
 ```
 $ git clone <this repo>
 $ cd <this repo>
 $ pip3 install --user -r requirements.txt
 $ echo "alias deploy_beta='python3 /path/to/deploy_beta.py'" >> ~/.bashrc
 ```
-* And that's it once again! Not so bad either in my opinion and it should **just work** (famous last words 💀).
+* And that's it! Fast, simple, and it should **just work** (famous last words 💀). However, if you'd prefer to run a compiled binary instead of an aliased script, you can try #2 below.
+
+2. The second approach also begins with cloning the repository; however, the similarities pretty much stop there. Once you have cloned the repo, you then need to create a virtual environment, install all dependencies, and finally use `pyinstaller` to generate an executable binary. On Mac or Linux, this would look something like:
+```
+$ git clone <this repo>
+$ cd <this repo>
+$ python3 -m venv venv
+$ pip3 install -r requirements.txt
+$ pip3 install --user pyinstaller
+$ /Users/<username>/Library/Python/3.7/bin/pyinstaller --onefile --paths venv/lib/python3.7/site-packages:$PATH deploy_beta.py
+```
+This will create the folder `./dist` and drop an executable called `deploy_beta` in it. From there, you could then move the executable to your `bin` folder for ease of use:
+```
+$ mv ./dist/deploy_beta /usr/local/bin
+```
+* Once that's done, you can execute the script by simply running `deploy_beta`, regardless of which folder you are in. Also, aside from `pyinstaller`, you are not required to install any other user level dependencies. 
+* The drawback to this approach however is that the executable itself can be slow to start (we're talking a few seconds on average here 😬). If this is as annoying for you as it is for me, you may want to stick with #1. 
 
 Of course, there are also other ways to install and use the script so if you have a better / preferred method go for it. But I think the above two are the most streamlined.
 
