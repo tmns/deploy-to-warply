@@ -21,9 +21,9 @@ $ cd <this repo>
 $ python3 -m venv venv
 $ pip3 install -r requirements.txt
 $ pip3 install --user pyinstaller
-$ /Users/<username>/Library/Python/3.7/bin/pyinstaller --onefile --paths venv/lib/python3.7/site-packages:$PATH deploy_beta.py
+$ <path-to-python3>/bin/pyinstaller --onefile --paths venv/lib/python3.7/site-packages:$PATH deploy_beta.py
 ```
-This will create the folder `./dist` and drop an executable called `deploy_beta` in it. From there, you could then move the executable to your `bin` folder for ease of use:
+* This will create the folder `./dist` and drop an executable called `deploy_beta` in it. From there, you could then move the executable to your `bin` folder for ease of use:
 ```
 $ mv ./dist/deploy_beta /usr/local/bin
 ```
