@@ -48,19 +48,27 @@ class Client:
                                    self.remote_user, self.remote_password)
             except Exception as ex:
                 print(ex)
-            finally:
+                sys.exit()
+            else:
                 return client
         return self.client
 
     def disconnect(self):
         self.client.close()
 
-    def execute(self, cmd):
+    def execute(self, cmd, sudo=False):
         """Executes a single command on the remote server."""
         if self.client is None:
             self.client = self.__connect()
+        feed_password = False
+        if sudo and self.remote_user is not 'root':
+            cmd = f"sudo -S -p '' {cmd}"
+            feed_password = self.remote_password is not None and len(self.remote_password) > 0
         print(f'executing command on remote server: {cmd}...')
         stdin, stdout, stderr = self.client.exec_command(cmd)
+        if feed_password:
+            stdin.write(self.remote_password + "\n")
+            stdin.flush()
         return stdout.readlines()
 
     def upload(self, local_dir, remote_upload_dir, key=None):
@@ -72,6 +80,7 @@ class Client:
             scp.put(local_dir,
                     recursive=True,
                     remote_path=remote_upload_dir)
+            print(f'local directory {local_dir} uploaded successfully...')
         except SCPException:
             raise SystemExit(SCPException.message)
         finally:
@@ -85,7 +94,7 @@ class Client:
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
-        description="deploy an ember project to beta")
+        description="deploy an ember project")
     parser.add_argument(
         "-e", "--env", help="sets environment file to given file, defaults to .env", default=".env")
     parser.add_argument(
@@ -97,7 +106,6 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     config = Config(args.env)
-    print(args)
 
     if args.build_dev:
         print('building project for development...')
@@ -131,10 +139,10 @@ if __name__ == '__main__':
     client = Client(config)
 
     client.upload(local_dir, remote_upload_dir, key)
-    client.execute(f'rm -rf {remote_final_dir}/{local_dir}.bak')
+    client.execute(f'rm -rf {remote_final_dir}/{local_dir}.bak', sudo=True)
     client.execute(
-        f'mv {remote_final_dir}/{local_dir} {remote_final_dir}/{local_dir}.bak')
-    client.execute(f'mv {remote_upload_dir}/{local_dir} {remote_final_dir}')
+        f'mv {remote_final_dir}/{local_dir} {remote_final_dir}/{local_dir}.bak', sudo=True)
+    client.execute(f'mv {remote_upload_dir}/{local_dir} {remote_final_dir}', sudo=True)
 
     client.disconnect()
     print('finished!')
