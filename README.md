@@ -1,6 +1,6 @@
-# Deploy to Beta Server Script 🚀
+# Deploy to Warply Server Script 🚀
 
-This is a script to be used for both building and deploying an Ember project to a beta / test server. Included in the repo is the source code for the script, along with an executable `deploy_beta`, which you can add to your `/usr/local/bin` directory for ease of use.
+This is a script to be used for both building and deploying an Ember project to a Warply server. Blast off!
 
 # Install
 There are two main ways you can *install* the script. 
@@ -10,7 +10,7 @@ There are two main ways you can *install* the script.
 $ git clone <this repo>
 $ cd <this repo>
 $ pip3 install --user -r requirements.txt
-$ echo "alias deploy_beta='python3 /path/to/deploy_beta.py'" >> ~/.bashrc
+$ echo "alias deploy='python3 /path/to/deploy.py'" >> ~/.bashrc
 ```
   * And that's it! Fast, simple, and it should **just work** (famous last words 💀). 
   * However, if you'd prefer to run a compiled binary instead of an aliased script, you can try #2 below.
@@ -22,13 +22,13 @@ $ cd <this repo>
 $ python3 -m venv venv
 $ pip3 install -r requirements.txt
 $ pip3 install --user pyinstaller
-$ <path-to-python3>/bin/pyinstaller --onefile --paths venv/lib/python3.7/site-packages:$PATH deploy_beta.py
+$ <path-to-python3>/bin/pyinstaller --onefile --paths venv/lib/python3.7/site-packages:$PATH deploy.py
 ```
   * This will create the folder `./dist` and drop an executable called `deploy_beta` in it. From there, you could then move the executable to your `bin` folder for ease of use:
 ```
-$ mv ./dist/deploy_beta /usr/local/bin
+$ mv ./dist/deploy /usr/local/bin
 ```
-  * Once that's done, you can execute the script by simply running `deploy_beta`, regardless of which folder you are in. Also, aside from `pyinstaller`, you are not required to install any other user level dependencies. 
+  * Once that's done, you can execute the script by simply running `deploy`, regardless of which folder you are in. Also, aside from `pyinstaller`, you are not required to install any other user level dependencies. 
   * The drawback to this approach however is that the executable itself can be slow to start (we're talking a few seconds on average here 😬). If this is as annoying for you as it is for me, you may want to stick with #1. 
 
 Of course, there are also other ways to install and use the script so if you have a better / preferred method go for it. But I think the above two are the most streamlined.
