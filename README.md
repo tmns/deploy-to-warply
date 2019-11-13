@@ -24,7 +24,7 @@ $ pip3 install -r requirements.txt
 $ pip3 install --user pyinstaller
 $ <path-to-python3>/bin/pyinstaller --onefile --paths venv/lib/python3.7/site-packages:$PATH deploy.py
 ```
-  * This will create the folder `./dist` and drop an executable called `deploy_beta` in it. From there, you could then move the executable to your `bin` folder for ease of use:
+  * This will create the folder `./dist` and drop an executable called `deploy` in it. From there, you could then move the executable to your `bin` folder for ease of use:
 ```
 $ mv ./dist/deploy /usr/local/bin
 ```
@@ -36,15 +36,18 @@ Of course, there are also other ways to install and use the script so if you hav
 # Run
 Once you have the script installed, you can run it with `-h` to view the available arguments:
 ```
-$ deploy_beta -h
-usage: deploy_beta.py [-h] [-e ENV] [-b]
+usage: deploy.py [-h] [-e ENV] [-k KEY] [-bd] [-bp]
 
-deploy an ember project to beta
+deploy an ember project
 
 optional arguments:
   -h, --help         show this help message and exit
   -e ENV, --env ENV  sets environment file to given file, defaults to .env
-  -b, --build        calls 'ember b' to build the current ember project
+  -k KEY, --key KEY  uses the defined keyfile to connect to the remote server
+  -bd, --build-dev   calls 'ember b' to build the current ember project for
+                     development
+  -bp, --build-prod  calls 'ember b -p' to build the current ember project for
+                     production
 ```
 As you can see in the output, the script allows you to specify a environment configuration file for the script to pull defined parameters from. If you do not specify your own with the `-e` argument, the script will look in the current directory for a file called `.env`. If this file does not exist, the script will fail and exit immediately. As such, before you attempt to use the script for deployment, make sure you create such a file. 
 
@@ -52,25 +55,34 @@ The environment variables you can set within the configuration file include:
 * `REMOTE_SERVER` - **Mandatory** - The IP address / hostname of the server you want to deploy to.
 * `REMOTE_PORT` - Optional - The port of the server you wan to deploy to. **Defaults** to `22`.
 * `REMOTE_USER` - **Mandatory** - The username of the account on the remote server you want to deploy with.
-* `REMOTE_PASSWORD` - **Mandatory** - The password of the account on the remote server you want to deploy with.
+* `REMOTE_PASSWORD` - **Mandatory** - The password of the account on the remote server you want to deploy with. Even if you are using a key for authentication, your password is still required to execute the necessary `sudo` commands on the server.
 * `REMOTE_UPLOAD_DIR` - Optional - The directory on the remote server that the local folder will be uploaded to. For safety reasons, cannot be the same as `REMOTE_FINAL_DIR`. **Defaults** to `/tmp`.
 * `REMOTE_FINAL_DIR` - **Mandatory** - The directory on the remote server that the local folder will be served from.
 * `LOCAL_DIR` - Optional - The local directory you wish to upload to the remote server. **Defaults** to `./dist`.
 
-Once you have a file with the appropriate variables set, you are ready to deploy! This is as easy as running something like the following:
+Once you have a file with the appropriate variables set, you are ready to deploy! Assuming we have a `.env` file that looks like so...:
 ```
-$ deploy_beta -b
+REMOTE_SERVER='beta.server.ly'
+REMOTE_USER='username'
+REMOTE_PASSWORD='password'
+REMOTE_FINAL_DIR='~/app'
+```
+...deploying would look something like the following:
+```
+$ deploy -bd
 loading environment file ".env"...
 building project...
 Environment: development
 [..snip..]
 connecting to remote server beta.server.ly...
+uploading...
+local directory dist uploaded succesfully...
 executing command on remote server: rm -rf ~/app/dist.bak...
 executing command on remote server: mv ~/app/dist ~/app/dist.bak...
 executing command on remote server: mv /tmp/dist ~/app/...
 finished!
 ```
-Running with `-b` as shown above will also build the Ember project in the current directory.
+At this point you might be wondering why we need to declare both a `REMOTE_UPLOAD_DIR` and `REMOTE_FINAL_DIR` 🤔. If so, read the precautions section below!
 
 # Precautions
 The script makes sure to take some precautions during the deploy process. This is so that we don't just blindly upload files to the server, overwriting everything in our way. This is achieved by breaking the deploy process up into three steps:
