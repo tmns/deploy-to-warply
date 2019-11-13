@@ -1,6 +1,6 @@
 # Deploy to Beta Server Script 🚀
 
-This is a script to be used for both building and deploying an Ember project to a beta / test server. Included in the repo is the source code for the script, along with an executable `deploy_beta`, which you can add to your `/usr/local/bin` directory for ease of use.
+This is a script to be used for both building and deploying an Ember project to a beta / test server. Blast off!
 
 # Install
 There are two main ways you can *install* the script. 
