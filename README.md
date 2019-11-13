@@ -61,6 +61,7 @@ The environment variables you can set within the configuration file include:
 
 Once you have a file with the appropriate variables set, you are ready to deploy! Assuming we have a `.env` file that looks like so:
 ```
+$ cat .env
 REMOTE_SERVER='beta.server.ly'
 REMOTE_USER='username'
 REMOTE_PASSWORD='password'
