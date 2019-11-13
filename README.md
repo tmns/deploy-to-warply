@@ -1,6 +1,6 @@
 # Deploy to Warply Server Script 🚀
 
-This is a script to be used for both building and deploying an Ember project to a Warply server. Blast off!
+This is a script to be used for both building and deploying an Ember project to a Warply server. Let's get started!
 
 # Install
 There are two main ways you can *install* the script. 
