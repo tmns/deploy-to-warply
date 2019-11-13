@@ -116,7 +116,7 @@ if __name__ == '__main__':
     elif args.build_prod:
         print('building project for production...')
         try:
-            subprocess.run(["ember", "b", "-p"])
+            subprocess.run(["ember", "b", "-p"], check=True)
         except Exception as ex:
             sys.exit()
 
