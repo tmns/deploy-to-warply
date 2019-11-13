@@ -1,5 +1,5 @@
-import os, sys, subprocess, argparse
-from os import environ
+import sys, subprocess, argparse
+from os import environ, path
 from dotenv import find_dotenv, load_dotenv
 from paramiko import SSHClient, AutoAddPolicy, RSAKey
 from paramiko.auth_handler import AuthenticationException
@@ -10,7 +10,7 @@ from io import StringIO
 class Config:
     def __init__(self, env):
         print(f'loading environment file "{env}"...')
-        if not os.path.exists(env):
+        if not path.exists(env):
             print(
                 f'given environment file "{env}" does not exist\nexiting...')
             sys.exit()
