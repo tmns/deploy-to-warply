@@ -10,6 +10,7 @@ $ git clone <this repo>
 $ cd <this repo>
 $ pip3 install --user -r requirements.txt
 $ echo "alias deploy='python3 /path/to/deploy.py'" >> ~/.bashrc
+$ source ~/.bashrc
 ```
   * And that's it! Fast, simple, and it should **just work** (famous last words 💀). 
   * However, if you'd prefer to run a compiled binary instead of an aliased script, you can try #2 below.
@@ -65,7 +66,7 @@ $ cat .env
 REMOTE_SERVER='beta.server.ly'
 REMOTE_USER='username'
 REMOTE_PASSWORD='password'
-REMOTE_FINAL_DIR='~/app'
+REMOTE_FINAL_DIR='/var/www/app'
 ```
 ...deploying would look something like the following on Mac or Linux:
 ```
