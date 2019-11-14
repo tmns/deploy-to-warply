@@ -100,17 +100,33 @@ if __name__ == '__main__':
     parser.add_argument(
         "-k", "--key", help="uses the defined keyfile to connect to the remote server")
     parser.add_argument(
-        "-bd", "--build-dev", help="calls 'ember b' to build the current ember project for development", action="store_true")
+        "-b", "--build", help="calls 'ember b' to build the current ember project for local development", action="store_true")
+    parser.add_argument(
+        "-bd", "--build-dev", help="calls 'ember b -e dev' to build the current ember project for remote dev server", action="store_true")
+    parser.add_argument(
+        "-bs", "--build-stage", help="calls 'ember b -e stage' to build the current ember project for remote staging server", action="store_true")
     parser.add_argument(
         "-bp", "--build-prod", help="calls 'ember b -p' to build the current ember project for production", action="store_true")
     args = parser.parse_args()
 
     config = Config(args.env)
 
-    if args.build_dev:
-        print('building project for development...')
+    if args.build:
+        print('building project for local development...')
         try:
             subprocess.run(["ember", "b"], check=True)
+        except Exception as ex:
+            sys.exit()
+    elif args.build_dev:
+        print('building project for remote dev server...')
+        try:
+            subprocess.run(["ember", "b", "-e", "dev"], check=True)
+        except Exception as ex:
+            sys.exit()
+    elif args.build_stage:
+        print('building project for remote stage server...')
+        try:
+            subprocess.run(["ember", "b", "-e", "stage"], check=True)
         except Exception as ex:
             sys.exit()
     elif args.build_prod:
