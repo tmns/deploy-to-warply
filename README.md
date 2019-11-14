@@ -36,18 +36,22 @@ Of course, there are also other ways to install and use the script so if you hav
 # Run
 Once you have the script installed, you can run it with `-h` to view the available arguments:
 ```
-usage: deploy.py [-h] [-e ENV] [-k KEY] [-bd] [-bp]
+usage: deploy.py [-h] [-e ENV] [-k KEY] [-b] [-bd] [-bs] [-bp]
 
 deploy an ember project
 
 optional arguments:
-  -h, --help         show this help message and exit
-  -e ENV, --env ENV  sets environment file to given file, defaults to .env
-  -k KEY, --key KEY  uses the defined keyfile to connect to the remote server
-  -bd, --build-dev   calls 'ember b' to build the current ember project for
-                     development
-  -bp, --build-prod  calls 'ember b -p' to build the current ember project for
-                     production
+  -h, --help          show this help message and exit
+  -e ENV, --env ENV   sets environment file to given file, defaults to .env
+  -k KEY, --key KEY   uses the defined keyfile to connect to the remote server
+  -b, --build         calls 'ember b' to build the current ember project for
+                      local development
+  -bd, --build-dev    calls 'ember b -e dev' to build the current ember
+                      project for remote dev server
+  -bs, --build-stage  calls 'ember b -e stage' to build the current ember
+                      project for remote staging server
+  -bp, --build-prod   calls 'ember b -p' to build the current ember project
+                      for production
 ```
 As you can see in the output, the script allows you to specify a environment configuration file for the script to pull defined parameters from. If you do not specify your own with the `-e` argument, the script will look in the current directory for a file called `.env`. If this file does not exist, the script will fail and exit immediately. As such, before you attempt to use the script for deployment, make sure you create such a file. 
 
