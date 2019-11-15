@@ -88,8 +88,9 @@ class Client:
 
     def __progress(self, filename, size, sent):
         """Displays SCP progress."""
+        erase_line = '\x1b[2K'
         sys.stdout.write(
-            f'uploading {filename}: {float(sent) / float(size) * 100:.2f}%    \r')
+            f'{erase_line}uploading {filename.decode()}: {float(sent) / float(size) * 100:.2f}%    \r')
 
 
 if __name__ == '__main__':
