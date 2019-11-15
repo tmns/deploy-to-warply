@@ -101,11 +101,11 @@ if __name__ == '__main__':
     parser.add_argument(
         "-k", "--key", help="uses the defined keyfile to connect to the remote server")
     parser.add_argument(
-        "-b", "--build", help="calls 'ember b' to build the current ember project for local development", action="store_true")
+        "-b", "--build", help="calls 'ember b' to build the current ember project with default development parameters", action="store_true")
     parser.add_argument(
-        "-bd", "--build-dev", help="calls 'ember b -e dev' to build the current ember project for remote dev server", action="store_true")
+        "-bd", "--build-dev", help="calls 'ember b -e dev' to build the current ember project with custom dev parameters", action="store_true")
     parser.add_argument(
-        "-bs", "--build-stage", help="calls 'ember b -e stage' to build the current ember project for remote staging server", action="store_true")
+        "-bs", "--build-stage", help="calls 'ember b -e stage' to build the current ember project with custom staging parameters", action="store_true")
     parser.add_argument(
         "-bp", "--build-prod", help="calls 'ember b -p' to build the current ember project for production", action="store_true")
     args = parser.parse_args()
@@ -113,19 +113,19 @@ if __name__ == '__main__':
     config = Config(args.env)
 
     if args.build:
-        print('building project for local development...')
+        print('building project with default development parameters...')
         try:
             subprocess.run(["ember", "b"], check=True)
         except Exception as ex:
             sys.exit()
     elif args.build_dev:
-        print('building project for remote dev server...')
+        print('building project with custom dev parameters...')
         try:
             subprocess.run(["ember", "b", "-e", "dev"], check=True)
         except Exception as ex:
             sys.exit()
     elif args.build_stage:
-        print('building project for remote stage server...')
+        print('building project with custom staging parameters...')
         try:
             subprocess.run(["ember", "b", "-e", "stage"], check=True)
         except Exception as ex:
