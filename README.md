@@ -59,7 +59,7 @@ The environment variables you can set within the configuration file include:
 * `REMOTE_SERVER` - **Mandatory** - The IP address / hostname of the server you want to deploy to.
 * `REMOTE_PORT` - Optional - The port of the server you wan to deploy to. **Defaults** to `22`.
 * `REMOTE_USER` - **Mandatory** - The username of the account on the remote server you want to deploy with.
-* `REMOTE_PASSWORD` - **Mandatory** - The password of the account on the remote server you want to deploy with. Even if you are using a key for authentication, your password is still required to execute the necessary `sudo` commands on the server.
+* `REMOTE_PASSWORD` - Optional - The password of the account on the remote server you want to deploy with. Note, even if you are using a key for authentication, your password may still be required to execute the necessary `sudo` commands on the server (e.g. if the user account you are deploying with does not own the final remote directory).
 * `REMOTE_UPLOAD_DIR` - Optional - The directory on the remote server that the local folder will be uploaded to. For safety reasons, cannot be the same as `REMOTE_FINAL_DIR`. **Defaults** to `/tmp`.
 * `REMOTE_FINAL_DIR` - **Mandatory** - The directory on the remote server that the local folder will be served from.
 * `LOCAL_DIR` - Optional - The local directory you wish to upload to the remote server. **Defaults** to `./dist`.
