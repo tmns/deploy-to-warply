@@ -44,12 +44,12 @@ optional arguments:
   -h, --help          show this help message and exit
   -e ENV, --env ENV   sets environment file to given file, defaults to .env
   -k KEY, --key KEY   uses the defined keyfile to connect to the remote server
-  -b, --build         calls 'ember b' to build the current ember project for
-                      local development
+  -b, --build         calls 'ember b' to build the current ember project with
+                      default development parameters
   -bd, --build-dev    calls 'ember b -e dev' to build the current ember
-                      project for remote dev server
+                      project with custom dev parameters
   -bs, --build-stage  calls 'ember b -e stage' to build the current ember
-                      project for remote staging server
+                      project with custom staging parameters
   -bp, --build-prod   calls 'ember b -p' to build the current ember project
                       for production
 ```
@@ -77,9 +77,10 @@ REMOTE_FINAL_DIR='/var/www/app'
 ```
 $ deploy -k ~/keys/username.pem -bd
 loading environment file ".env"...
-building project...
-Environment: development
+building project with custom dev parameters...
+Environment: dev
 [..snip..]
+Built project successfully. Stored in "dist/".
 using the following key to connect: /Users/username/keys/username.pem
 connecting to remote server beta.server.ly...
 uploading...
