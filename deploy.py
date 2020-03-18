@@ -170,4 +170,10 @@ if __name__ == '__main__':
     client.execute(f'unzip {remote_upload_dir}/{local_dir_zip} -d {remote_final_dir}', sudo=True)
 
     client.disconnect()
+    
+    try:
+        print(f'cleaning up...')
+        subprocess.run(["rm", "-f", f'{local_dir_zip}'])
+    except Exception as ex:
+        sys.exit()
     print('finished!')
