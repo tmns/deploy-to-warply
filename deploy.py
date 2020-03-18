@@ -137,6 +137,15 @@ if __name__ == '__main__':
         except Exception as ex:
             sys.exit()
 
+    local_dir = config.local_dir
+    local_dir_zip = local_dir + '.zip'
+
+    try:
+        print(f'zipping up local directory: {local_dir}...')
+        subprocess.run(["zip", "-r", f'{local_dir_zip}', f'{local_dir}'])
+    except Exception as ex:
+        sys.exit()
+
     key = None
     if args.key:
         print(f'using the following key to connect: {args.key}')
@@ -146,7 +155,6 @@ if __name__ == '__main__':
             print(f'The following exception occurred when attempting to load the given key:\n{ex}')
             sys.exit()
 
-    local_dir = config.local_dir
     remote_upload_dir = config.remote_upload_dir
     remote_final_dir = config.remote_final_dir
     if remote_upload_dir == remote_final_dir:
@@ -155,11 +163,11 @@ if __name__ == '__main__':
 
     client = Client(config)
 
-    client.upload(local_dir, remote_upload_dir, key)
+    client.upload(local_dir_zip, remote_upload_dir, key)
     client.execute(f'rm -rf {remote_final_dir}/{local_dir}.bak', sudo=True)
     client.execute(
         f'mv {remote_final_dir}/{local_dir} {remote_final_dir}/{local_dir}.bak', sudo=True)
-    client.execute(f'mv {remote_upload_dir}/{local_dir} {remote_final_dir}', sudo=True)
+    client.execute(f'unzip {remote_upload_dir}/{local_dir_zip} -d {remote_final_dir}', sudo=True)
 
     client.disconnect()
     print('finished!')
